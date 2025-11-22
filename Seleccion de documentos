@@ -1,0 +1,17 @@
+// Seleccionar todos los productos
+db.productos.find()
+
+// Seleccionar usuarios con límite
+db.usuarios.find().limit(3)
+
+// Seleccionar campos específicos
+db.productos.find(
+  { categoria: "café" },
+  { nombre: 1, precio: 1, stock: 1, _id: 0 }
+)
+
+// Ordenar productos por precio descendente
+db.productos.find().sort({ precio: -1 })
+
+// Contar documentos
+db.productos.countDocuments({ categoria: "café" })
