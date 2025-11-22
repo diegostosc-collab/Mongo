@@ -1,0 +1,40 @@
+// Conteo de productos por categoría
+db.productos.aggregate([
+  {
+    $group: {
+      _id: "$categoria",
+      totalProductos: { $sum: 1 },
+      stockTotal: { $sum: "$stock" }
+    }
+  },
+  { $sort: { totalProductos: -1 } }
+])
+
+// Precio promedio por categoría
+db.productos.aggregate([
+  {
+    $group: {
+      _id: "$categoria",
+      precioPromedio: { $avg: "$precio" },
+      precioMaximo: { $max: "$precio" },
+      precioMinimo: { $min: "$precio" },
+      cantidadProductos: { $sum: 1 }
+    }
+  }
+])
+
+// Productos con stock bajo por categoría
+db.productos.aggregate([
+  {
+    $match: {
+      stock: { $lt: 10 }
+    }
+  },
+  {
+    $group: {
+      _id: "$categoria",
+      productosStockBajo: { $sum: 1 },
+      nombresProductos: { $push: "$nombre" }
+    }
+  }
+])
