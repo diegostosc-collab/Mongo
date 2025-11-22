@@ -1,0 +1,50 @@
+// Análisis de café por región
+db.productos.aggregate([
+  {
+    $match: {
+      categoria: "café",
+      "caracteristicas.origen": { $exists: true }
+    }
+  },
+  {
+    $group: {
+      _id: "$caracteristicas.origen",
+      totalProductos: { $sum: 1 },
+      stockTotal: { $sum: "$stock" },
+      precioPromedio: { $avg: "$precio" },
+      precioMinimo: { $min: "$precio" },
+      precioMaximo: { $max: "$precio" },
+      productos: {
+        $push: {
+          nombre: "$nombre",
+          precio: "$precio",
+          stock: "$stock"
+        }
+      }
+    }
+  },
+  { $sort: { precioPromedio: -1 } }
+])
+
+// Productos por vendedor
+db.productos.aggregate([
+  {
+    $match: {
+      "vendedor.id_vendedor": { $exists: true }
+    }
+  },
+  {
+    $group: {
+      _id: {
+        vendedor: "$vendedor.nombre",
+        departamento: "$vendedor.departamento"
+      },
+      totalProductos: { $sum: 1 },
+      valorInventario: {
+        $sum: { $multiply: ["$precio", "$stock"] }
+      },
+      stockTotal: { $sum: "$stock" }
+    }
+  },
+  { $sort: { valorInventario: -1 } }
+])
