@@ -1,0 +1,75 @@
+// Insertar nuevo usuario
+db.usuarios.insertOne({
+  "nombre": "María García",
+  "email": "maria.garcia@email.com",
+  "telefono": "+573157890123",
+  "fecha_registro": new Date(),
+  "direcciones": [
+    {
+      "tipo": "casa",
+      "ciudad": "Bucaramanga",
+      "departamento": "Santander",
+      "direccion": "Calle 45 #28-15"
+    }
+  ],
+  "preferencias": {
+    "categorias_favoritas": ["café", "artesanias"],
+    "departamento_preferido": "Santander"
+  }
+})
+
+// Insertar nuevo producto
+db.productos.insertOne({
+  "_id": ObjectId("691ef71592200c12b62d4a50"),
+  "nombre": "Café Especial de Santander",
+  "categoria": "café",
+  "precio": 43000,
+  "moneda": "COP",
+  "stock": 80,
+  "descripcion": "Café especial de las montañas de Santander",
+  "caracteristicas": {
+    "origen": "Santander",
+    "peso_gramos": 500,
+    "tipo_cafe": "especial",
+    "altura_msnm": 1400
+  },
+  "tags": ["especial", "aromatico", "santander"],
+  "activo": true,
+  "vendedor": {
+    "id_vendedor": "507f1f77bcf86cd799439071",
+    "nombre": "Café Santandereano Premium",
+    "departamento": "Santander"
+  },
+  "fecha_creacion": new Date(),
+  "imagenes": ["cafe_santander_especial.jpg"]
+})
+
+// Insertar nuevo pedido
+db.pedidos.insertOne({
+  "id_usuario": "691ef71592200c12b62d4a37",
+  "fecha_pedido": new Date(),
+  "estado": "pendiente",
+  "productos": [
+    {
+      "id_producto": "691ef06d92200c12b62d4a03",
+      "cantidad": 1,
+      "precio_unitario": 38000
+    },
+    {
+      "id_producto": "691ef19b92200c12b62d4a15",
+      "cantidad": 1,
+      "precio_unitario": 65000
+    }
+  ],
+  "total": 103000,
+  "metodo_pago": "tarjeta_debito"
+})
+
+// Insertar valoración
+db.valoraciones.insertOne({
+  "id_usuario": "691ef71592200c12b62d4a37",
+  "id_producto": "691ef06d92200c12b62d4a03",
+  "calificacion": 5,
+  "comentario": "Excelente café, muy aromático",
+  "fecha_valoracion": new Date()
+})
