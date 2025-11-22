@@ -1,0 +1,38 @@
+// Actualizar stock de un producto
+db.productos.updateOne(
+  { _id: ObjectId("691ef06d92200c12b62d4a03") },
+  { $set: { stock: 100 } }
+)
+
+// Incrementar stock
+db.productos.updateOne(
+  { _id: ObjectId("691ef06d92200c12b62d4a03") },
+  { $inc: { stock: 10 } }
+)
+
+// Actualizar estado de pedido
+db.pedidos.updateOne(
+  { _id: ObjectId("691eefb592200c12b62d49fe") },
+  { $set: { estado: "completado" } }
+)
+
+// Actualizar múltiples documentos
+db.productos.updateMany(
+  { stock: { $lt: 5 } },
+  { $set: { activo: false } }
+)
+
+// Agregar nueva dirección a usuario
+db.usuarios.updateOne(
+  { _id: ObjectId("691eef1692200c12b62d49f8") },
+  { 
+    $push: { 
+      direcciones: {
+        tipo: "vacaciones",
+        ciudad: "Cartagena",
+        departamento: "Bolívar",
+        direccion: "Bocagrande Calle 2 #15-30"
+      }
+    }
+  }
+)
