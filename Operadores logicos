@@ -1,1 +1,18 @@
+// Productos de café con stock bajo o precio alto
+db.productos.find({
+  $and: [
+    { categoria: "café" },
+    { $or: [
+        { stock: { $lt: 10 } },
+        { precio: { $gt: 50000 } }
+    ]}
+  ]
+})
 
+// Usuarios de Cali o Medellín
+db.usuarios.find({
+  $or: [
+    { "direcciones.ciudad": "Cali" },
+    { "direcciones.ciudad": "Medellín" }
+  ]
+})
