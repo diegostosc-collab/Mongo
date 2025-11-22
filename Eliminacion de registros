@@ -1,0 +1,10 @@
+// Eliminar un producto específico
+db.productos.deleteOne({ _id: ObjectId("691ef71592200c12b62d4a50") })
+
+// Eliminar productos sin stock
+db.productos.deleteMany({ stock: 0 })
+
+// Eliminar valoraciones antiguas
+db.valoraciones.deleteMany({
+  fecha_valoracion: { $lt: ISODate("2024-01-01") }
+})
