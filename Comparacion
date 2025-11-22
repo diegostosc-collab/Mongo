@@ -1,0 +1,15 @@
+// Productos con stock menor a 10
+db.productos.find({ stock: { $lt: 10 } })
+
+// Productos con precio entre 30,000 y 50,000
+db.productos.find({
+  precio: { $gte: 30000, $lte: 50000 }
+})
+
+// Productos que no son de café
+db.productos.find({ categoria: { $ne: "café" } })
+
+// Usuarios registrados después de enero 2024
+db.usuarios.find({
+  fecha_registro: { $gte: ISODate("2024-01-01") }
+})
