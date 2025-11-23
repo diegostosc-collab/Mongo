@@ -1,0 +1,63 @@
+// Análisis completo del comercio
+db.productos.aggregate([
+  // Fase 1: Filtrar productos activos
+  {
+    $match: {
+      activo: true
+    }
+  },
+  // Fase 2: Proyectar campos necesarios
+  {
+    $project: {
+      nombre: 1,
+      categoria: 1,
+      precio: 1,
+      stock: 1,
+      valorInventario: { $multiply: ["$precio", "$stock"] },
+      vendedor: 1,
+      caracteristicas: 1
+    }
+  },
+  // Fase 3: Agrupar por categoría
+  {
+    $group: {
+      _id: "$categoria",
+      totalProductos: { $sum: 1 },
+      stockTotal: { $sum: "$stock" },
+      valorTotalInventario: { $sum: "$valorInventario" },
+      precioPromedio: { $avg: "$precio" },
+      productosBajoStock: {
+        $sum: {
+          $cond: [{ $lt: ["$stock", 10] }, 1, 0]
+        }
+      }
+    }
+  },
+  // Fase 4: Ordenar por valor de inventario
+  {
+    $sort: { valorTotalInventario: -1 }
+  },
+  // Fase 5: Proyectar resultados finales
+  {
+    $project: {
+      _id: 0,
+      categoria: "$_id",
+      totalProductos: 1,
+      stockTotal: 1,
+      valorTotalInventario: 1,
+      precioPromedio: { $round: ["$precioPromedio", 2] },
+      productosBajoStock: 1,
+      porcentajeBajoStock: {
+        $round: [
+          {
+            $multiply: [
+              { $divide: ["$productosBajoStock", "$totalProductos"] },
+              100
+            ]
+          },
+          2
+        ]
+      }
+    }
+  }
+])
